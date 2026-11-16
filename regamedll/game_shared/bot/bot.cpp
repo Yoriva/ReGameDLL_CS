@@ -367,6 +367,9 @@ byte CBot::ThrottledMsec() const
 // Do a "client command" - useful for invoking menu choices, etc.
 void CBot::ClientCommand(const char *cmd, const char *arg1, const char *arg2, const char *arg3)
 {
+	if (!cmd)
+		return;
+
 	BotArgs[0] = cmd;
 	BotArgs[1] = arg1;
 	BotArgs[2] = arg2;

@@ -269,7 +269,7 @@ void WriteSigonMessages()
 
 int CMD_ARGC_()
 {
-	if (!UseBotArgs)
+	if (!UseBotArgs || !BotArgs[0])
 		return CMD_ARGC();
 
 	int i = 0;
@@ -281,7 +281,7 @@ int CMD_ARGC_()
 
 const char *CMD_ARGV_(int i)
 {
-	if (!UseBotArgs)
+	if (!UseBotArgs || !BotArgs[0])
 		return CMD_ARGV(i);
 
 	if (i < 4)
@@ -3735,8 +3735,13 @@ void EXT_FUNC ClientCommand_(edict_t *pEntity)
 	if (!pEntity->pvPrivateData)
 		return;
 
+	const char *pcmd = CMD_ARGV_(0);
+
+	if (!pcmd)
+		return;
+
 	static char command[128] = "";
-	Q_strncpy(command, CMD_ARGV_(0), sizeof command - 1);
+	Q_strncpy(command, pcmd, sizeof command - 1);
 	command[sizeof command - 1] = '\0';
 
 	g_ReGameHookchains.m_InternalCommand.callChain(InternalCommand, pEntity, command, CMD_ARGV_(1));
